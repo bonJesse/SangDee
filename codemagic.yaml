@@ -3,32 +3,27 @@ workflows:
     name: iOS Build Workflow for Xcode 16.1 and iOS 18.1
     max_build_duration: 60 # Set max build duration in minutes
     scripts:
-      # Checkout source code from GitHub
-      - checkout: 
-          repository: https://github.com/bonJesse/SangDee.git
+      # Checkout the repository
+      - "git clone https://github.com/bonJesse/SangDee.git"
 
       # Install dependencies (CocoaPods)
-      - name: Install dependencies
-        script: |
-          cd SangDee/SangDee-iOS
-          gem install cocoapods
-          pod install
+      - |
+        cd SangDee/SangDee-iOS
+        gem install cocoapods
+        pod install
 
       # Build the app using xcodebuild
-      - name: Build iOS App
-        script: |
-          cd SangDee/SangDee-iOS
-          xcodebuild clean build -workspace SangDee.xcworkspace -scheme SangDee-iOS -sdk iphoneos
+      - |
+        cd SangDee/SangDee-iOS
+        xcodebuild clean build -workspace SangDee.xcworkspace -scheme SangDee-iOS -sdk iphoneos
 
       # Export the .ipa file
-      - name: Export .ipa
-        script: |
-          cd SangDee/SangDee-iOS
-          xcodebuild -exportArchive -archivePath $PWD/build/ios/iphoneos/SangDee-iOS.xcarchive -exportOptionsPlist exportOptions.plist -exportPath $PWD/build/ipa
+      - |
+        cd SangDee/SangDee-iOS
+        xcodebuild -exportArchive -archivePath $PWD/build/ios/iphoneos/SangDee-iOS.xcarchive -exportOptionsPlist exportOptions.plist -exportPath $PWD/build/ipa
 
       # Upload the .ipa file to Artifacts
-      - name: Upload .ipa
-        script: |
-          cd SangDee/SangDee-iOS
-          mv build/ipa/*.ipa $CM_IPA_OUTPUT
-          cp $CM_IPA_OUTPUT /artifacts/ipa/
+      - |
+        cd SangDee/SangDee-iOS
+        mv build/ipa/*.ipa $CM_IPA_OUTPUT
+        cp $CM_IPA_OUTPUT /artifacts/ipa/
