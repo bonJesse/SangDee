@@ -485,7 +485,7 @@
                         </svg>
                     </button>
                     <div>
-                        <div class="app-title">SangDee</div>
+                        <div class="app-title">SangDee_1.0.1</div>
                         <div class="thai-title">แสงดี</div>
                     </div>
                     <div style="width: 24px"></div>
@@ -951,6 +951,151 @@
                 } else {
                     backButton.style.visibility = 'visible';
                 }
+            }
+        });
+
+        // 在 script 标签中添加相机增强功能
+        async function initCamera() {
+            try {
+                // 优先使用后置摄像头
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: { ideal: 'environment' },
+                        width: { ideal: window.innerWidth * window.devicePixelRatio },
+                        height: { ideal: window.innerHeight * window.devicePixelRatio }
+                    }
+                });
+                
+                cameraPreview.srcObject = stream;
+                
+                // 针对 iOS Chrome 的视频播放优化
+                cameraPreview.setAttribute('playsinline', '');
+                cameraPreview.setAttribute('webkit-playsinline', '');
+                await cameraPreview.play();
+                
+            } catch (err) {
+                console.error('Camera error:', err);
+                // 提供更友好的错误提示
+                if (err.name === 'NotAllowedError') {
+                    alert('Please allow camera access to use this feature');
+                } else {
+                    alert('Camera not available. Please try again.');
+                }
+            }
+        }
+
+        // 优化色卡显示/隐藏逻辑
+        const colorCardsToggle = document.getElementById('colorCardsToggle');
+        const colorCards = document.getElementById('colorCards');
+        let isColorCardsVisible = false;
+
+        // 添加快捷手势
+        let touchStartY = 0;
+        const SWIPE_THRESHOLD = 50;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const diff = touchStartY - touchY;
+            
+            if (Math.abs(diff) > SWIPE_THRESHOLD) {
+                if (diff > 0 && !isColorCardsVisible) {
+                    // 向上滑动，显示色卡
+                    showColorCards();
+                } else if (diff < 0 && isColorCardsVisible) {
+                    // 向下滑动，隐藏色卡
+                    hideColorCards();
+                }
+            }
+        });
+
+        function showColorCards() {
+            colorCards.style.maxHeight = colorCards.scrollHeight + 'px';
+            isColorCardsVisible = true;
+            colorCardsToggle.classList.add('active');
+        }
+
+        function hideColorCards() {
+            colorCards.style.maxHeight = '0';
+            isColorCardsVisible = false;
+            colorCardsToggle.classList.remove('active');
+        }
+
+        // iOS Safari 滚动优化
+        document.addEventListener('touchmove', (e) => {
+            if (!e.target.closest('.scrollable')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // 性能优化：使用 requestAnimationFrame 进行颜色更新
+        function updatePreviewColor(color) {
+            requestAnimationFrame(() => {
+                previewArea.style.background = color;
+            });
+        }
+
+        // 添加硬件加速
+        document.querySelector('.side-menu-content').style.transform = 'translateZ(0)';
+        document.querySelector('.color-cards').style.transform = 'translateZ(0)';
+
+        // 优化色轮渲染性能
+        function drawColorWheel(canvas) {
+            const ctx = canvas.getContext('2d', { alpha: false });
+            const imageData = ctx.createImageData(canvas.width, canvas.height);
+            const data = imageData.data;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(centerX, centerY) - 5;
+            
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    const index = (y * canvas.width + x) * 4;
+                    const dx = x - centerX;
+                    const dy = y - centerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance <= radius) {
+                        const hue = (Math.atan2(dy, dx) * 180 / Math.PI + 360) % 360;
+                        const sat = Math.min(distance / radius, 1);
+                        const [r, g, b] = hslToRgb(hue / 360, sat, 0.5);
+                        
+                        data[index] = r;
+                        data[index + 1] = g;
+                        data[index + 2] = b;
+                        data[index + 3] = 255;
+                    }
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        // 优化 RGB 滑块性能
+        const rgbSliders = document.querySelectorAll('.rgb-slider input');
+        rgbSliders.forEach(slider => {
+            let rafId;
+            slider.addEventListener('input', () => {
+                cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(updateRGBColor);
+            });
+        });
+
+        // 添加页面可见性处理
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && isCameraActive) {
+                toggleCamera(); // 页面隐藏时停止相机
+            }
+        });
+
+        // 添加内存管理
+        window.addEventListener('unload', () => {
+            if (cameraPreview.srcObject) {
+                cameraPreview.srcObject.getTracks().forEach(track => track.stop());
             }
         });
     </script>
