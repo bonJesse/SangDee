@@ -104,6 +104,8 @@
         }
 
         .control-panel {
+            position: relative;
+            z-index: 2;
             background: rgba(255, 255, 255, 0.95);
             padding: 20px;
             border-top-left-radius: 25px;
@@ -217,10 +219,13 @@
         }
 
         .color-cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .color-cards.expanded {
+            max-height: 300px;
         }
 
         .color-card {
@@ -261,6 +266,9 @@
             width: 200px;
             height: 200px;
             margin: 0 auto;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .selected-color-preview {
@@ -368,8 +376,12 @@
         }
 
         .quick-brightness {
-            margin-top: 20px;
-            padding: 0 15px;
+            position: relative;
+            z-index: 1;
+            background: white;
+            padding-top: 15px;
+            margin-top: -1px;
+            border-top: 1px solid rgba(0,0,0,0.1);
         }
 
         .menu-button {
@@ -469,6 +481,13 @@
             font-size: 16px;
             color: #666;
         }
+
+        .color-wheel-section {
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -485,7 +504,7 @@
                         </svg>
                     </button>
                     <div>
-                        <div class="app-title">SangDee_1.0.2</div>
+                        <div class="app-title">SangDee_1.0.5</div>
                         <div class="thai-title">แสงดี</div>
                     </div>
                     <div style="width: 24px"></div>
@@ -564,7 +583,7 @@
                             <div style="width: 24px"></div>
                         </div>
                         
-                        <!-- 主菜单 -->
+                        <!-- 菜单 -->
                         <div class="menu-page" id="mainMenu">
                             <div class="menu-item" data-page="colorSettings">
                                 <div class="menu-item-content">
@@ -623,7 +642,7 @@
                             <div class="adjustment-group">
                                 <label class="control-label">
                                     <span>Brightness</span>
-                                    <span class="thai">ความสว่าง</span>
+                                    <span class="thai">ค��ามสว่าง</span>
                                 </label>
                                 <input type="range" id="brightness" min="0" max="100" value="50">
                                 <div class="value-display" id="brightnessValue">50%</div>
@@ -650,7 +669,13 @@
     </div>
 
     <script>
-        // 首先定义所有需要的函数
+        // 在 DOMContentLoaded 事件之前，先定义全局变量和函数
+        let elements = {};
+        let isColorCardsVisible = false;
+        let isCameraActive = false;
+        let touchStartY = 0;
+
+        // 基础功能函数
         function toggleColorCards() {
             const colorCards = document.getElementById('colorCards');
             const colorCardsToggle = document.getElementById('colorCardsToggle');
@@ -671,29 +696,63 @@
             });
         }
 
-        function toggleFullscreen() {
-            const frame = document.querySelector('.iphone-frame');
-            if (!frame) return;
+        // 初始化函数
+        function initializeColorCards() {
+            const colorCards = document.querySelectorAll('.color-card');
+            colorCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    colorCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const color = this.dataset.color;
+                    if (elements.previewArea && color) {
+                        elements.previewArea.style.background = color;
+                        localStorage.setItem('currentColor', color);
+                    }
+                    
+                    setTimeout(() => toggleColorCards(), 300);
+                });
+            });
 
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                if (frame.requestFullscreen) {
-                    frame.requestFullscreen().catch(err => console.error(err));
-                } else if (frame.webkitRequestFullscreen) {
-                    frame.webkitRequestFullscreen().catch(err => console.error(err));
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen().catch(err => console.error(err));
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen().catch(err => console.error(err));
-                }
+            if (elements.colorCardsToggle) {
+                elements.colorCardsToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleColorCards();
+                });
             }
         }
 
-        // 将所有初始化代码放在一个主函数中
-        document.addEventListener('DOMContentLoaded', function() {
+        function initializeFullscreen() {
+            if (elements.fullscreenToggle) {
+                elements.fullscreenToggle.addEventListener('click', toggleFullscreen);
+            }
+        }
+
+        function initializeCamera() {
+            if (elements.cameraToggle) {
+                elements.cameraToggle.addEventListener('click', toggleCamera);
+            }
+        }
+
+        function restoreState() {
+            const savedColor = localStorage.getItem('currentColor');
+            if (savedColor && elements.previewArea) {
+                elements.previewArea.style.background = savedColor;
+            }
+            
+            const isCardsCollapsed = localStorage.getItem('colorCardsCollapsed') === 'true';
+            if (!isCardsCollapsed && elements.colorCardsToggle) {
+                toggleColorCards();
+            }
+        }
+
+        // 主初始化函数
+        function initialize() {
             // 获取所有需要的 DOM 元素
-            const elements = {
+            elements = {
                 fullscreenToggle: document.getElementById('fullscreenToggle'),
                 colorCardsToggle: document.getElementById('colorCardsToggle'),
                 colorCards: document.getElementById('colorCards'),
@@ -707,64 +766,235 @@
                 colorWheel: document.getElementById('colorWheel')
             };
 
-            // 状态变量
-            let isColorCardsVisible = false;
-            let isCameraActive = false;
-            let touchStartY = 0;
-
-            // 初始化色卡控制
-            function initializeColorCards() {
-                if (elements.colorCardsToggle && elements.colorCards) {
-                    elements.colorCardsToggle.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        toggleColorCards();
-                    });
-                }
+            // 初始化各个组件
+            initializeColorCards();
+            initializeFullscreen();
+            initializeRGBControls();
+            initializeColorWheel();
+            initializeCamera();
+            
+            // iOS 特殊处理
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                document.addEventListener('touchstart', function(e) {
+                    if (e.target.tagName !== 'INPUT') {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
             }
+            
+            // 延迟恢复状态
+            setTimeout(restoreState, 100);
+        }
 
-            // 初始化全屏控制
-            function initializeFullscreen() {
-                if (elements.fullscreenToggle) {
-                    elements.fullscreenToggle.addEventListener('click', toggleFullscreen);
-                }
-            }
-
-            // 恢复状态
-            function restoreState() {
-                const savedColor = localStorage.getItem('currentColor');
-                if (savedColor && elements.previewArea) {
-                    elements.previewArea.style.background = savedColor;
-                }
-                
-                const isCardsCollapsed = localStorage.getItem('colorCardsCollapsed') === 'true';
-                if (!isCardsCollapsed && elements.colorCardsToggle) {
-                    toggleColorCards();
-                }
-            }
-
-            // 执行初始化
-            function initialize() {
-                initializeColorCards();
-                initializeFullscreen();
-                // 其他初始化...
-                
-                // 最后恢复状态
-                setTimeout(restoreState, 100); // 添加小延迟确保 DOM 完全加载
-            }
-
-            // 启动应用
+        // DOM 加载完成后执行初始化
+        document.addEventListener('DOMContentLoaded', function() {
             initialize();
-
+            
             // 更新版本号
             const titleElement = document.querySelector('.app-title');
             if (titleElement) {
-                titleElement.textContent = 'SangDee_1.0.3';
+                titleElement.textContent = 'SangDee_1.0.5';
+            }
+
+            // 设置菜单事件监听
+            const menuItems = document.querySelectorAll('.menu-item');
+            if (menuItems) {
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const targetPage = this.dataset.page;
+                        showPage(targetPage);
+                    });
+                });
+            }
+
+            const backButton = document.getElementById('backToMain');
+            if (backButton) {
+                backButton.addEventListener('click', () => showPage('mainMenu'));
             }
         });
 
         // 移除重复的事件监听器
         // 删除之前重复的 DOMContentLoaded 事件监听器
         // 删除重复的 fullscreenToggle.addEventListener
+
+        // 在全局变量声明后，添加这些函数定义
+        function toggleFullscreen() {
+            const frame = document.querySelector('.iphone-frame');
+            if (!frame) return;
+
+            try {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    if (frame.requestFullscreen) {
+                        frame.requestFullscreen();
+                    } else if (frame.webkitRequestFullscreen) {
+                        frame.webkitRequestFullscreen();
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            } catch (err) {
+                console.error('Fullscreen error:', err);
+            }
+        }
+
+        function toggleCamera() {
+            const cameraPreview = document.getElementById('cameraPreview');
+            const cameraToggle = document.getElementById('cameraToggle');
+            
+            if (!cameraPreview || !cameraToggle) return;
+            
+            if (cameraPreview.style.display === 'none' || !cameraPreview.style.display) {
+                initCamera().then(success => {
+                    if (success) {
+                        cameraPreview.style.display = 'block';
+                        cameraToggle.classList.add('active');
+                        isCameraActive = true;
+                    }
+                });
+            } else {
+                const stream = cameraPreview.srcObject;
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                cameraPreview.style.display = 'none';
+                cameraToggle.classList.remove('active');
+                isCameraActive = false;
+            }
+        }
+
+        async function initCamera() {
+            const cameraPreview = document.getElementById('cameraPreview');
+            if (!cameraPreview) return false;
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: { ideal: 'environment' },
+                        width: { ideal: window.innerWidth },
+                        height: { ideal: window.innerHeight }
+                    }
+                });
+                
+                cameraPreview.srcObject = stream;
+                cameraPreview.setAttribute('playsinline', '');
+                cameraPreview.setAttribute('webkit-playsinline', '');
+                await cameraPreview.play();
+                return true;
+            } catch (err) {
+                console.error('Camera error:', err);
+                alert('Camera access failed. Please check permissions.');
+                return false;
+            }
+        }
+
+        function initializeRGBControls() {
+            const redSlider = document.getElementById('redSlider');
+            const greenSlider = document.getElementById('greenSlider');
+            const blueSlider = document.getElementById('blueSlider');
+            const previewArea = document.getElementById('previewArea');
+            const colorPreview = document.getElementById('colorPreview');
+
+            if (!redSlider || !greenSlider || !blueSlider) return;
+
+            function updateColor() {
+                const r = redSlider.value;
+                const g = greenSlider.value;
+                const b = blueSlider.value;
+                const color = `rgb(${r}, ${g}, ${b})`;
+
+                if (previewArea) {
+                    previewArea.style.background = color;
+                }
+                if (colorPreview) {
+                    colorPreview.style.backgroundColor = color;
+                }
+
+                document.getElementById('redValue').textContent = r;
+                document.getElementById('greenValue').textContent = g;
+                document.getElementById('blueValue').textContent = b;
+
+                localStorage.setItem('currentColor', color);
+            }
+
+            [redSlider, greenSlider, blueSlider].forEach(slider => {
+                slider.addEventListener('input', updateColor);
+            });
+        }
+
+        function initializeColorWheel() {
+            const canvas = document.getElementById('colorWheel');
+            const colorPreview = document.getElementById('colorPreview');
+            
+            if (!canvas || !colorPreview) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(centerX, centerY) - 5;
+            
+            function drawColorWheel() {
+                for (let angle = 0; angle < 360; angle++) {
+                    const startAngle = (angle - 2) * Math.PI / 180;
+                    const endAngle = (angle + 2) * Math.PI / 180;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                    ctx.closePath();
+                    
+                    const hue = angle;
+                    ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+                    ctx.fill();
+                }
+            }
+            
+            drawColorWheel();
+            
+            canvas.addEventListener('click', function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const imageData = ctx.getImageData(x, y, 1, 1).data;
+                const color = `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
+                
+                colorPreview.style.backgroundColor = color;
+                document.getElementById('previewArea').style.background = color;
+                
+                // 更新 RGB 滑块
+                document.getElementById('redSlider').value = imageData[0];
+                document.getElementById('greenSlider').value = imageData[1];
+                document.getElementById('blueSlider').value = imageData[2];
+                
+                document.getElementById('redValue').textContent = imageData[0];
+                document.getElementById('greenValue').textContent = imageData[1];
+                document.getElementById('blueValue').textContent = imageData[2];
+            });
+        }
+
+        function showPage(pageId) {
+            const menuPages = document.querySelectorAll('.menu-page');
+            const backButton = document.getElementById('backToMain');
+            
+            menuPages.forEach(page => {
+                if (page.id === pageId) {
+                    page.classList.remove('hidden');
+                    if (pageId === 'colorSettings') {
+                        initializeColorWheel();
+                    }
+                } else {
+                    page.classList.add('hidden');
+                }
+            });
+            
+            if (backButton) {
+                backButton.style.visibility = pageId === 'mainMenu' ? 'hidden' : 'visible';
+            }
+        }
     </script>
 </body>
 </html> 
