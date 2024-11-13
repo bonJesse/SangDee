@@ -1,8 +1,14 @@
 name: SangDee
 options:
-  bundleIdPrefix: com.moijesse
+  bundleIdPrefix: com.sangdee
   deploymentTarget:
     iOS: 18.0
+  xcodeVersion: "15.0"
+
+settings:
+  base:
+    DEVELOPMENT_TEAM: YOUR_TEAM_ID
+    PRODUCT_BUNDLE_IDENTIFIER: com.sangdee.app
 
 targets:
   SangDee:
@@ -13,14 +19,25 @@ targets:
     settings:
       base:
         INFOPLIST_FILE: SangDee/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: com.moijesse.sangdee
+        PRODUCT_BUNDLE_IDENTIFIER: com.sangdee.app
+        TARGETED_DEVICE_FAMILY: 1
+        DEVELOPMENT_TEAM: YOUR_TEAM_ID
     info:
       path: SangDee/Info.plist
       properties:
         CFBundleName: SangDee
         CFBundleDisplayName: SangDee
+        CFBundleShortVersionString: 1.0.3
+        CFBundleVersion: 1
         UILaunchStoryboardName: LaunchScreen
         UIMainStoryboardFile: ""
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
-        NSCameraUsageDescription: "需要访问相机来预览灯光效果" 
+        NSCameraUsageDescription: "需要访问相机来预览灯光效果"
+        UIApplicationSupportsIndirectInputEvents: true
+        UIViewControllerBasedStatusBarAppearance: true
+        UIUserInterfaceStyle: Light
+    dependencies:
+      - framework: SnapKit
+      - framework: RxSwift
+      - framework: RxCocoa

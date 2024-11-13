@@ -31,13 +31,15 @@ class ColorWheelView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        colorWheel?.frame = bounds
+        colorWheel?.cornerRadius = bounds.width / 2
         drawColorWheel()
     }
     
     private func drawColorWheel() {
         guard let context = UIGraphicsGetCurrentContext() else { return }
-        let radius = bounds.width / 2
         
+        let radius = bounds.width / 2
         for angle in 0..<360 {
             let startAngle = CGFloat(angle) * .pi / 180
             let endAngle = CGFloat(angle + 2) * .pi / 180

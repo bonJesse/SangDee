@@ -5,20 +5,21 @@ import RxCocoa
 
 protocol SideMenuDelegate: AnyObject {
     func sideMenu(_ menu: SideMenuViewController, didUpdateColor color: UIColor)
-    func sideMenu(_ menu: SideMenuViewController, didUpdateContrast contrast: Float)
+    func sideMenu(_ menu: SideMenuViewController, didUpdateBrightness brightness: Float)
 }
 
 class SideMenuViewController: UIViewController {
     
-    weak var delegate: SideMenuDelegate?
-    private let disposeBag = DisposeBag()
-    
     // MARK: - UI Components
     private let colorWheel = ColorWheelView()
     private let rgbControls = RGBControlView()
-    private let contrastSlider = UISlider()
+    private let brightnessSlider = UISlider()
     private let headerLabel = UILabel()
     private let thaiHeaderLabel = UILabel()
+    
+    // MARK: - Properties
+    weak var delegate: SideMenuDelegate?
+    private let disposeBag = DisposeBag()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -30,30 +31,25 @@ class SideMenuViewController: UIViewController {
     
     // MARK: - Setup
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
-        // Header setup
         headerLabel.text = "Settings"
         headerLabel.font = .systemFont(ofSize: 24, weight: .bold)
         
         thaiHeaderLabel.text = "ตั้งค่า"
         thaiHeaderLabel.font = .systemFont(ofSize: 18)
-        thaiHeaderLabel.textColor = .gray
+        thaiHeaderLabel.textColor = .secondaryLabel
         
-        // Contrast slider setup
-        contrastSlider.minimumValue = 0
-        contrastSlider.maximumValue = 200
-        contrastSlider.value = 100
+        brightnessSlider.minimumValue = 0
+        brightnessSlider.maximumValue = 100
+        brightnessSlider.value = 50
         
-        // Color wheel setup
         colorWheel.delegate = self
-        
-        // RGB controls setup
         rgbControls.delegate = self
     }
     
     private func setupConstraints() {
-        [headerLabel, thaiHeaderLabel, colorWheel, contrastSlider, rgbControls].forEach {
+        [headerLabel, thaiHeaderLabel, colorWheel, brightnessSlider, rgbControls].forEach {
             view.addSubview($0)
         }
         
@@ -73,23 +69,23 @@ class SideMenuViewController: UIViewController {
             make.size.equalTo(200)
         }
         
-        contrastSlider.snp.makeConstraints { make in
+        brightnessSlider.snp.makeConstraints { make in
             make.top.equalTo(colorWheel.snp.bottom).offset(30)
             make.left.right.equalToSuperview().inset(20)
         }
         
         rgbControls.snp.makeConstraints { make in
-            make.top.equalTo(contrastSlider.snp.bottom).offset(30)
+            make.top.equalTo(brightnessSlider.snp.bottom).offset(30)
             make.left.right.equalToSuperview().inset(20)
             make.height.equalTo(150)
         }
     }
     
     private func setupBindings() {
-        contrastSlider.rx.value
-            .subscribe(onNext: { [weak self] value in
-                self?.delegate?.sideMenu(self!, didUpdateContrast: value)
-            })
+        brightnessSlider.rx.value
+            .bind { [weak self] value in
+                self?.delegate?.sideMenu(self!, didUpdateBrightness: value)
+            }
             .disposed(by: disposeBag)
     }
 }

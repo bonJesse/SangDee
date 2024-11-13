@@ -20,9 +20,13 @@ class LightController {
         updateLight()
     }
     
+    func applyPreset(_ preset: ColorPreset) {
+        currentColor = preset.color
+        updateLight()
+    }
+    
     private func updateLight() {
-        // 这里实现与硬件的通信逻辑
-        // 目前仅打印状态
+        // 实际的硬件控制逻辑将在这里实现
         print("Light updated - Color: \(currentColor), Brightness: \(brightness), Contrast: \(contrast)")
     }
 } 
