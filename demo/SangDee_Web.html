@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="th-TH">
+<head>
+    <title>SangDee (แสงดี) Demo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .iphone-frame {
+            position: relative;
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 50px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 30px;
+            background: #000;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 100;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .sangdee-app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-header {
+            padding: 15px 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .app-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .thai-title {
+            font-size: 16px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .preview-area {
+            flex: 1;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .thai {
+            font-size: 14px;
+            color: #666;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 20px;
+            background: transparent;
+            margin: 10px 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            margin-top: -8px;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            border: none;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .preset-button {
+            padding: 12px;
+            border: none;
+            border-radius: 15px;
+            background: #f8f9fa;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .preset-button:active {
+            transform: scale(0.95);
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .value-display {
+            font-size: 12px;
+            color: #666;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .camera-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .color-cards-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .color-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .color-card {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .color-card.active {
+            border-color: #ff6b6b;
+            transform: scale(0.95);
+        }
+
+        .card-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 10px;
+            padding: 4px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .color-card:hover .card-name {
+            opacity: 1;
+        }
+
+        .color-wheel-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        .selected-color-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .rgb-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .rgb-slider {
+            text-align: center;
+        }
+
+        .rgb-slider label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .rgb-slider input[type="range"] {
+            writing-mode: bt-lr;
+            width: 100%;
+            height: 100px;
+        }
+
+        .rgb-value {
+            display: block;
+            font-size: 12px;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .side-menu.active {
+            left: 0;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .side-menu-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 85%;
+            height: 100%;
+            background: white;
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .side-menu.active .side-menu-content {
+            transform: translateX(0);
+        }
+
+        .side-menu-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .fullscreen-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .quick-brightness {
+            margin-top: 20px;
+            padding: 0 15px;
+        }
+
+        .menu-button {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @supports (padding: max(0px)) {
+            .control-panel {
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+            }
+            
+            .app-header {
+                padding-top: max(15px, env(safe-area-inset-top));
+            }
+        }
+
+        .menu-page {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 70px;
+            padding: 0 20px;
+        }
+
+        .menu-page.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-item:active {
+            background: #e9ecef;
+        }
+
+        .menu-item-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item-content span:first-child {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .menu-item-content .thai {
+            font-size: 14px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .side-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .side-menu-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .side-menu-header h3 {
+            margin: 4px 0 0;
+            font-size: 16px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="iphone-frame">
+        <div class="notch"></div>
+        <div class="screen">
+            <div class="sangdee-app">
+                <div class="app-header">
+                    <button class="menu-button" id="menuButton">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div>
+                        <div class="app-title">SangDee</div>
+                        <div class="thai-title">แสงดี</div>
+                    </div>
+                    <div style="width: 24px"></div>
+                </div>
+                <div class="preview-area" id="previewArea">
+                    <video class="camera-preview" id="cameraPreview" autoplay playsinline></video>
+                    <button class="fullscreen-toggle" id="fullscreenToggle">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                        </svg>
+                    </button>
+                    <button class="camera-toggle" id="cameraToggle">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="control-panel">
+                    <div class="color-cards-toggle" id="colorCardsToggle">
+                        <div class="toggle-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <span>Color Presets</span>
+                        <span class="thai">เลือกสี</span>
+                    </div>
+                    <div class="color-cards collapsed" id="colorCards">
+                        <div class="color-card" data-color="#FFE4E1" style="background: #FFE4E1">
+                            <span class="card-name">Soft Light<br>แสงนุ่ม</span>
+                        </div>
+                        <div class="color-card" data-color="#F0F8FF" style="background: #F0F8FF">
+                            <span class="card-name">Cool Light<br>แสงเย็น</span>
+                        </div>
+                        <div class="color-card" data-color="#FFF0F5" style="background: #FFF0F5">
+                            <span class="card-name">Warm Pink<br>ชมพูอุ่น</span>
+                        </div>
+                        <div class="color-card" data-color="#F5F5DC" style="background: #F5F5DC">
+                            <span class="card-name">Natural<br>ธรรมชาติ</span>
+                        </div>
+                        <div class="color-card" data-color="#E6E6FA" style="background: #E6E6FA">
+                            <span class="card-name">Lavender<br>ลาเวนเดอร์</span>
+                        </div>
+                        <div class="color-card" data-color="#F0FFF0" style="background: #F0FFF0">
+                            <span class="card-name">Fresh<br>สดใส</span>
+                        </div>
+                        <div class="color-card" data-color="#FFF5EE" style="background: #FFF5EE">
+                            <span class="card-name">Bright<br>สว่าง</span>
+                        </div>
+                        <div class="color-card" data-color="#F8F8FF" style="background: #F8F8FF">
+                            <span class="card-name">Studio<br>สตูดิโอ</span>
+                        </div>
+                    </div>
+                    <div class="quick-brightness">
+                        <label class="control-label">
+                            <span>Brightness</span>
+                            <span class="thai">ความสว่าง</span>
+                        </label>
+                        <input type="range" id="quickBrightness" min="0" max="100" value="50">
+                        <div class="value-display" id="quickBrightnessValue">50%</div>
+                    </div>
+                </div>
+                <div class="side-menu" id="sideMenu">
+                    <div class="side-menu-content">
+                        <div class="side-menu-header">
+                            <button class="back-button" id="backToMain">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 18l-6-6 6-6"/>
+                                </svg>
+                            </button>
+                            <div>
+                                <h2>Settings</h2>
+                                <h3 class="thai">ตั้งค่า</h3>
+                            </div>
+                            <div style="width: 24px"></div>
+                        </div>
+                        
+                        <!-- 主菜单 -->
+                        <div class="menu-page" id="mainMenu">
+                            <div class="menu-item" data-page="colorSettings">
+                                <div class="menu-item-content">
+                                    <span>Color Settings</span>
+                                    <span class="thai">ตั้งค่าสี</span>
+                                </div>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 18l6-6-6-6"/>
+                                </svg>
+                            </div>
+                            <div class="menu-item" data-page="brightnessSettings">
+                                <div class="menu-item-content">
+                                    <span>Brightness & Contrast</span>
+                                    <span class="thai">ความสว่างและความคมชัด</span>
+                                </div>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 18l6-6-6-6"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- 颜色设置页面 -->
+                        <div class="menu-page hidden" id="colorSettings">
+                            <div class="color-wheel-section">
+                                <div class="section-title">
+                                    <span>Color Wheel</span>
+                                    <span class="thai">วงล้อสี</span>
+                                </div>
+                                <div class="color-wheel-container">
+                                    <canvas id="colorWheel" width="200" height="200"></canvas>
+                                    <div class="selected-color-preview" id="colorPreview"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="rgb-controls">
+                                <div class="rgb-slider">
+                                    <label>R <span class="thai">แดง</span></label>
+                                    <input type="range" id="redSlider" min="0" max="255" value="255">
+                                    <span class="rgb-value" id="redValue">255</span>
+                                </div>
+                                <div class="rgb-slider">
+                                    <label>G <span class="thai">เขียว</span></label>
+                                    <input type="range" id="greenSlider" min="0" max="255" value="255">
+                                    <span class="rgb-value" id="greenValue">255</span>
+                                </div>
+                                <div class="rgb-slider">
+                                    <label>B <span class="thai">น้ำเงิน</span></label>
+                                    <input type="range" id="blueSlider" min="0" max="255" value="255">
+                                    <span class="rgb-value" id="blueValue">255</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 亮度对比度设置页面 -->
+                        <div class="menu-page hidden" id="brightnessSettings">
+                            <div class="adjustment-group">
+                                <label class="control-label">
+                                    <span>Brightness</span>
+                                    <span class="thai">ความสว่าง</span>
+                                </label>
+                                <input type="range" id="brightness" min="0" max="100" value="50">
+                                <div class="value-display" id="brightnessValue">50%</div>
+                            </div>
+
+                            <div class="adjustment-group">
+                                <label class="control-label">
+                                    <span>Contrast</span>
+                                    <span class="thai">ความคมชัด</span>
+                                </label>
+                                <input type="range" id="contrast" min="0" max="200" value="100">
+                                <div class="value-display" id="contrastValue">100%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="fullscreen-toggle" id="fullscreenToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global function for drawing color wheel
+        function drawColorWheel(canvas) {
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2 - 5;
+
+            for(let angle = 0; angle < 360; angle++) {
+                const startAngle = (angle - 2) * Math.PI / 180;
+                const endAngle = (angle + 2) * Math.PI / 180;
+
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+
+                const hue = angle;
+                ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+                ctx.fill();
+            }
+        }
+
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('colorWheel');
+            if (canvas) {
+                drawColorWheel(canvas);
+            }
+            
+            // Initialize all controls
+            initializeControls();
+        });
+
+        function initializeControls() {
+            // Get all required elements
+            const brightness = document.getElementById('brightness');
+            const contrast = document.getElementById('contrast');
+            const redSlider = document.getElementById('redSlider');
+            const greenSlider = document.getElementById('greenSlider');
+            const blueSlider = document.getElementById('blueSlider');
+            const previewArea = document.getElementById('previewArea');
+            const colorPreview = document.getElementById('colorPreview');
+            const canvas = document.getElementById('colorWheel');
+
+            if (!canvas) {
+                console.error('Color wheel canvas not found');
+                return;
+            }
+
+            // Update displays
+            function updateDisplays() {
+                if (brightness) {
+                    document.getElementById('brightnessValue').textContent = `${brightness.value}%`;
+                }
+                if (contrast) {
+                    document.getElementById('contrastValue').textContent = `${contrast.value}%`;
+                }
+            }
+
+            // Update color preview
+            function updateColorPreview() {
+                if (!redSlider || !greenSlider || !blueSlider || !colorPreview) return;
+                
+                const color = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+                colorPreview.style.backgroundColor = color;
+                
+                // Update RGB values display
+                document.getElementById('redValue').textContent = redSlider.value;
+                document.getElementById('greenValue').textContent = greenSlider.value;
+                document.getElementById('blueValue').textContent = blueSlider.value;
+
+                // Update preview area
+                if (previewArea) {
+                    previewArea.style.background = color;
+                }
+            }
+
+            // Add event listeners
+            if (brightness) {
+                brightness.addEventListener('input', updateDisplays);
+            }
+            if (contrast) {
+                contrast.addEventListener('input', updateDisplays);
+            }
+
+            // RGB sliders
+            [redSlider, greenSlider, blueSlider].forEach(slider => {
+                if (slider) {
+                    slider.addEventListener('input', updateColorPreview);
+                }
+            });
+
+            // Color cards
+            document.querySelectorAll('.color-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.color-card').forEach(c => 
+                        c.classList.remove('active')
+                    );
+                    this.classList.add('active');
+                    const color = this.dataset.color;
+                    if (color) {
+                        updateColorControls(color);
+                    }
+                });
+            });
+
+            // Color wheel interaction
+            canvas.addEventListener('click', function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ctx = canvas.getContext('2d');
+                const imageData = ctx.getImageData(x, y, 1, 1).data;
+                const color = `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
+                
+                if (colorPreview) {
+                    colorPreview.style.backgroundColor = color;
+                }
+                
+                // Update RGB sliders
+                if (redSlider) redSlider.value = imageData[0];
+                if (greenSlider) greenSlider.value = imageData[1];
+                if (blueSlider) blueSlider.value = imageData[2];
+                
+                updateColorPreview();
+            });
+
+            // Helper function to convert hex to RGB
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            }
+
+            // Update controls based on selected color
+            function updateColorControls(color) {
+                const rgb = hexToRgb(color);
+                if (rgb && redSlider && greenSlider && blueSlider) {
+                    redSlider.value = rgb.r;
+                    greenSlider.value = rgb.g;
+                    blueSlider.value = rgb.b;
+                    updateColorPreview();
+                }
+            }
+
+            // Initial updates
+            updateDisplays();
+            updateColorPreview();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menuButton');
+            const sideMenu = document.getElementById('sideMenu');
+            const fullscreenToggle = document.getElementById('fullscreenToggle');
+            
+            // 菜单控制
+            menuButton.addEventListener('click', () => {
+                sideMenu.classList.add('active');
+            });
+            
+            sideMenu.addEventListener('click', (e) => {
+                if (e.target === sideMenu) {
+                    sideMenu.classList.remove('active');
+                }
+            });
+            
+            // 全屏控制
+            fullscreenToggle.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+            
+            // 快速亮度控制
+            const quickBrightness = document.getElementById('quickBrightness');
+            const quickBrightnessValue = document.getElementById('quickBrightnessValue');
+            
+            quickBrightness.addEventListener('input', () => {
+                quickBrightnessValue.textContent = `${quickBrightness.value}%`;
+                // 在这里添加亮度调整的实际逻辑
+            });
+        });
+
+        // 相机控制
+        const cameraToggle = document.getElementById('cameraToggle');
+        const cameraPreview = document.getElementById('cameraPreview');
+        let isCameraActive = false;
+
+        async function toggleCamera() {
+            try {
+                if (!isCameraActive) {
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { 
+                            facingMode: 'environment',
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 }
+                        } 
+                    });
+                    cameraPreview.srcObject = stream;
+                    cameraPreview.style.display = 'block';
+                    isCameraActive = true;
+                } else {
+                    const stream = cameraPreview.srcObject;
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
+                    cameraPreview.style.display = 'none';
+                    isCameraActive = false;
+                }
+            } catch (err) {
+                console.error('相机访问错误:', err);
+                alert('无法访问相机，请确保已授予相机权限。');
+            }
+        }
+
+        cameraToggle.addEventListener('click', toggleCamera);
+
+        // iOS 特定的事件处理
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.tagName !== 'INPUT') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // 处理 iOS 的安全区域
+        function updateSafeArea() {
+            document.documentElement.style.setProperty(
+                '--safe-area-inset-top',
+                `${window.env?.('safe-area-inset-top', '0px')}`
+            );
+            document.documentElement.style.setProperty(
+                '--safe-area-inset-bottom',
+                `${window.env?.('safe-area-inset-bottom', '0px')}`
+            );
+        }
+
+        window.addEventListener('resize', updateSafeArea);
+        updateSafeArea();
+
+        // 全屏模式优化
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        fullscreenToggle.addEventListener('click', toggleFullscreen);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const backButton = document.getElementById('backToMain');
+            const mainMenu = document.getElementById('mainMenu');
+            const menuItems = document.querySelectorAll('.menu-item');
+            const menuPages = document.querySelectorAll('.menu-page');
+            
+            // 隐藏返回按钮（初始状态）
+            backButton.style.visibility = 'hidden';
+            
+            // 菜单项点击处理
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetPage = this.dataset.page;
+                    showPage(targetPage);
+                });
+            });
+            
+            // 返回按钮点击处理
+            backButton.addEventListener('click', function() {
+                showPage('mainMenu');
+            });
+            
+            function showPage(pageId) {
+                menuPages.forEach(page => {
+                    if (page.id === pageId) {
+                        page.classList.remove('hidden');
+                    } else {
+                        page.classList.add('hidden');
+                    }
+                });
+                
+                // 控制返回按钮显示
+                if (pageId === 'mainMenu') {
+                    backButton.style.visibility = 'hidden';
+                } else {
+                    backButton.style.visibility = 'visible';
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
