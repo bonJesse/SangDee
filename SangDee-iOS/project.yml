@@ -1,0 +1,26 @@
+name: SangDee
+options:
+  bundleIdPrefix: com.moijesse
+  deploymentTarget:
+    iOS: 18.0
+
+targets:
+  SangDee:
+    type: application
+    platform: iOS
+    sources:
+      - path: SangDee
+    settings:
+      base:
+        INFOPLIST_FILE: SangDee/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.moijesse.sangdee
+    info:
+      path: SangDee/Info.plist
+      properties:
+        CFBundleName: SangDee
+        CFBundleDisplayName: SangDee
+        UILaunchStoryboardName: LaunchScreen
+        UIMainStoryboardFile: ""
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSCameraUsageDescription: "需要访问相机来预览灯光效果" 

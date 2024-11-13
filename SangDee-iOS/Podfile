@@ -1,0 +1,9 @@
+platform :ios, '18.0'
+
+target 'SangDee' do
+  use_frameworks!
+  
+  pod 'SnapKit', '~> 5.7.0'
+  pod 'RxSwift', '~> 6.6.0'
+  pod 'RxCocoa', '~> 6.6.0'
+end 
