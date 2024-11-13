@@ -1,80 +1,77 @@
-# SangDee (แสงดี) - Professional Mobile Lighting Tool | เครื่องมือแสงมืออาชีพบนมือถือ
+# SangDee (แสงดี) Light Control System
 
-SangDee (แสงดี) is a professional lighting application designed for selfie enthusiasts in Thailand, providing perfect lighting effects through intelligent screen adjustment.
+## Overview
+SangDee is a web-based light control system that provides an intuitive interface for adjusting lighting settings. The name "แสงดี" (SangDee) means "good light" in Thai.
 
-แสงดี เป็นแอปพลิเคชันแสงมืออาชีพที่ออกแบบมาสำหรับคนรักการเซลฟี่ในประเทศไทย ให้แสงที่สมบูรณ์แบบผ่านการปรับหน้าจออัจฉริยะ
+## Features
+- Quick color presets with 8 predefined options
+- Advanced color control with RGB sliders and color wheel
+- Real-time brightness adjustment
+- Camera preview for testing lighting effects
+- Fullscreen mode support
+- Mobile-optimized interface
+- Bilingual support (English/Thai)
 
-## Features | คุณสมบัติ
+## Platforms
+- Web (Chrome, Safari)
+- iOS (Chrome, Safari)
+- Android (Chrome)
 
-- 🌟 Smart Lighting Modes | โหมดแสงอัจฉริยะ
-  - Multi-level brightness adjustment | ปรับความสว่างหลายระดับ
-  - Adjustable color temperature | ปรับอุณหภูมิสี
-  - Custom RGB colors | ปรับแต่งสี RGB
-  - Scene presets | โหมดฉากสำเร็จรูป
+## Version
+Current version: 1.0.3
 
-- 💾 Preset Management | จัดการค่าที่ตั้งไว้
-  - Save personal settings | บันทึกการตั้งค่าส่วนตัว
-  - Import/Export presets | นำเข้า/ส่งออกค่าที่ตั้งไว้
-  - Share presets | แชร์ค่าที่ตั้งไว้
+## Usage
 
-- 🤳 Easy Operation | ใช้งานง่าย
-  - Intuitive touch control | ควบคุมด้วยการสัมผัสที่เข้าใจง่าย
-  - Quick preset switching | สลับค่าที่ตั้งไว้อย่างรวดเร็ว
-  - Real-time preview | ดูตัวอย่างแบบเรียลไทม์
+### Basic Controls
+1. Quick Color Selection
+   - Tap the color cards to instantly apply preset colors
+   - Swipe up/down to show/hide color presets
 
-## Technical Specifications | ข้อมูลทางเทคนิค
+2. Brightness Control
+   - Use the slider to adjust brightness level
+   - Values range from 0-100%
 
-### iOS Version | เวอร์ชัน iOS
-- Minimum support: iOS 13.0+ | รองรับ iOS 13.0 ขึ้นไป
-- Development language: Swift | ภาษาที่ใช้พัฒนา: Swift
-- Frameworks: AVFoundation, CoreGraphics, UIKit
+### Advanced Settings
+Access advanced settings through the menu button:
 
-### Android Version | เวอร์ชัน Android
-- Minimum support: Android 8.0 (API 26) | รองรับ Android 8.0 ขึ้นไป
-- Development language: Kotlin | ภาษาที่ใช้พัฒนา: Kotlin
-- Frameworks: CameraX, Jetpack Compose
+1. Color Settings
+   - Color wheel for precise color selection
+   - RGB sliders for fine-tuning
+   - Real-time color preview
 
-### Web Demo
-- 技术栈：HTML5, CSS3, JavaScript
-- 支持：所有现代浏览器
-- 特性：响应式设计，PWA支持
+2. Camera Preview
+   - Toggle camera to test lighting effects
+   - Supports both front and back cameras
+   - Requires camera permission
 
-## 安装说明
+3. Fullscreen Mode
+   - Toggle fullscreen for better visibility
+   - Available on supported devices
 
-### iOS 安装
-1. 从 App Store 下载 LightPro
-2. 首次启动时允许相机权限
-3. 按照引导完成初始设置
+## Technical Requirements
+- Modern web browser with JavaScript enabled
+- Camera permissions (optional)
+- Touch screen support recommended
 
-### Android 安装
-1. 从 Google Play Store 下载 LightPro
-2. 授予必要权限
-3. 完成初始化设置
+## Browser Compatibility
+- Chrome (iOS/Android): Full support
+- Safari (iOS): Full support
+- Other mobile browsers: Basic support
 
-### Web Demo 访问
-- 访问：[demo.lightpro.com](https://demo.lightpro.com)
-- 支持移动端和桌面端访问
+## Installation
+No installation required. Access directly through web browser.
 
-## 使用指南
+## Development
+Built with:
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+- Mobile-first responsive design
 
-### 基础操作
-1. 启动应用
-2. 选择补光模式：
-   - 滑动亮度条调节亮度
-   - 滑动色温条调节色温
-   - 点击色彩选择器自定义颜色
+## Notes
+- Camera access requires HTTPS or localhost
+- Some features may require device permissions
+- Performance may vary based on device capabilities
 
-### 预设管理
-1. 调节到理想效果
-2. 点击保存按钮
-3. 输入预设名称
-4. 确认保存
-
-### 分享功能
-1. 在预设列表中选择要分享的预设
-2. 点击分享按钮
-3. 选择分享平台
-
-## 开发说明
-
-### 目录结构 | โครงสร้างไดเรกทอรี
+## License
+MIT License
