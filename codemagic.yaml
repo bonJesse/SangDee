@@ -61,7 +61,7 @@ workflows:
           - .gradle
           - node_modules
           - Carthage
-          - **/Carthage
+          - SangDee/SangDee-iOS/Carthage
           - ~/Library/Caches/com.apple.dt.Xcode
           - ~/Library/Caches/org.carthage.CarthageKit
           - ~/Library/Caches/Homebrew
