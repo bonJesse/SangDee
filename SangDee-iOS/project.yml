@@ -2,8 +2,8 @@ name: SangDee
 options:
   bundleIdPrefix: com.sangdee
   deploymentTarget:
-    iOS: 18.0
-  xcodeVersion: "15.0"
+    iOS: 16.0
+  xcodeVersion: "16.1"
 
 settings:
   base:
@@ -16,28 +16,31 @@ targets:
     platform: iOS
     sources:
       - path: SangDee
+    resources:
+      - path: SangDee/Resources/Assets.xcassets
+        type: folder
     settings:
       base:
         INFOPLIST_FILE: SangDee/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.sangdee.app
-        TARGETED_DEVICE_FAMILY: 1
-        DEVELOPMENT_TEAM: YOUR_TEAM_ID
-    info:
-      path: SangDee/Info.plist
-      properties:
-        CFBundleName: SangDee
-        CFBundleDisplayName: SangDee
-        CFBundleShortVersionString: 1.0.3
-        CFBundleVersion: 1
-        UILaunchStoryboardName: LaunchScreen
-        UIMainStoryboardFile: ""
-        UISupportedInterfaceOrientations:
-          - UIInterfaceOrientationPortrait
-        NSCameraUsageDescription: "需要访问相机来预览灯光效果"
-        UIApplicationSupportsIndirectInputEvents: true
-        UIViewControllerBasedStatusBarAppearance: true
-        UIUserInterfaceStyle: Light
+        IPHONEOS_DEPLOYMENT_TARGET: 16.0
+        SWIFT_VERSION: 5.0
+        ENABLE_BITCODE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     dependencies:
-      - framework: SnapKit
-      - framework: RxSwift
-      - framework: RxCocoa
+      - sdk: UIKit.framework
+      - sdk: AVFoundation.framework
+      - package: SnapKit
+      - package: RxSwift
+      - package: RxCocoa
+
+packages:
+  SnapKit:
+    url: https://github.com/SnapKit/SnapKit
+    exactVersion: 5.6.0
+  RxSwift:
+    url: https://github.com/ReactiveX/RxSwift
+    exactVersion: 6.6.0
+  RxCocoa:
+    url: https://github.com/ReactiveX/RxSwift
+    exactVersion: 6.6.0

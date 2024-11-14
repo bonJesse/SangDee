@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- 背景 -->
+    <rect width="1024" height="1024" fill="#4A90E2"/>
+    
+    <!-- 光晕效果 -->
+    <circle cx="512" cy="512" r="400" fill="url(#radialGradient)"/>
+    
+    <!-- 灯泡图标 -->
+    <path d="M512 200C402.4 200 312 290.4 312 400C312 473.6 356.8 537.6 422.4 569.6V640C422.4 662.4 440 680 462.4 680H561.6C584 680 601.6 662.4 601.6 640V569.6C667.2 537.6 712 473.6 712 400C712 290.4 621.6 200 512 200Z" 
+          fill="white"/>
+    
+    <!-- 灯泡底座 -->
+    <rect x="462.4" y="680" width="99.2" height="60" fill="white"/>
+    
+    <!-- 渐变定义 -->
+    <defs>
+        <radialGradient id="radialGradient" cx="512" cy="512" r="400" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#4A90E2" stop-opacity="0"/>
+        </radialGradient>
+    </defs>
+</svg> 

@@ -1,5 +1,4 @@
 import UIKit
-import SnapKit
 
 class ColorCardCell: UICollectionViewCell {
     static let identifier = "ColorCardCell"
@@ -51,14 +50,19 @@ class ColorCardCell: UICollectionViewCell {
         
         [colorView, stackView].forEach { contentView.addSubview($0) }
         
-        colorView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        colorView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        stackView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(4)
-            make.bottom.equalToSuperview().inset(8)
-        }
+        NSLayoutConstraint.activate([
+            colorView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
     }
     
     // MARK: - Configuration

@@ -1,4 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M23 19C23 20.1046 22.1046 21 21 21H3C1.89543 21 1 20.1046 1 19V8C1 6.89543 1.89543 6 3 6H7L9 3H15L17 6H21C22.1046 6 23 6.89543 23 8V19Z" stroke="currentColor" stroke-width="2"/>
-  <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/>
+    <!-- 相机主体 -->
+    <rect x="2" y="6" width="20" height="14" rx="2" stroke="black" stroke-width="2"/>
+    
+    <!-- 相机顶部突起部分 -->
+    <path d="M7 4H17L15 6H9L7 4Z" fill="black"/>
+    
+    <!-- 镜头 -->
+    <circle cx="12" cy="13" r="4" stroke="black" stroke-width="2"/>
+    <circle cx="12" cy="13" r="2" fill="black"/>
+    
+    <!-- 闪光灯 -->
+    <circle cx="18" cy="9" r="1" fill="black"/>
 </svg> 

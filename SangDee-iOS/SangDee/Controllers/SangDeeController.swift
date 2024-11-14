@@ -4,7 +4,6 @@ import RxSwift
 import RxCocoa
 import AVFoundation
 
-@main
 class SangDeeController: UIViewController {
     
     // MARK: - UI Components
@@ -78,6 +77,9 @@ class SangDeeController: UIViewController {
         setupConstraints()
         setupNavigationBar()
         setupBindings()
+        
+        quickBrightnessSlider.value = 100
+        updatePreviewAreaBrightness(1.0)
     }
     
     override func viewDidLayoutSubviews() {
@@ -99,6 +101,10 @@ class SangDeeController: UIViewController {
             view.addSubview($0)
         }
         
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        previewArea.addGestureRecognizer(doubleTapGesture)
+        
         sideMenuVC.delegate = self
     }
     
@@ -106,9 +112,7 @@ class SangDeeController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: menuButton)
         title = "SangDee 1.0.3"
         
-        if #available(iOS 18.0, *) {
-            navigationItem.preferredSearchBarPlacement = .stacked
-            navigationItem.style = .browser
+        if #available(iOS 16.0, *) {
             navigationItem.backButtonDisplayMode = .minimal
         }
     }
@@ -144,9 +148,12 @@ class SangDeeController: UIViewController {
     
     private func setupBindings() {
         quickBrightnessSlider.rx.value
+            .distinctUntilChanged()
+            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
             .map { CGFloat($0 / 100.0) }
             .bind { [weak self] value in
                 self?.lightController.setBrightness(value)
+                self?.updatePreviewAreaBrightness(value)
             }
             .disposed(by: disposeBag)
     }
@@ -179,8 +186,8 @@ class SangDeeController: UIViewController {
     
     // MARK: - Camera Methods
     private func setupCamera() {
-        guard let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-            print("Failed to get camera device")
+        guard let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {
+            print("Failed to get front camera device")
             return
         }
         
@@ -230,6 +237,46 @@ class SangDeeController: UIViewController {
                     self?.videoPreviewLayer?.opacity = 0.0
                 }
             }
+        }
+    }
+    
+    private func updatePreviewAreaBrightness(_ value: CGFloat) {
+        UIView.animate(withDuration: 0.2) {
+            self.previewArea.alpha = value
+        }
+    }
+    
+    // MARK: - Double Tap Gesture
+    private var isControlsHidden = false
+    
+    @objc private func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
+        isControlsHidden.toggle()
+        
+        UIView.animate(withDuration: 0.3) {
+            self.colorCardsCollectionView.alpha = self.isControlsHidden ? 0 : 1
+            self.quickBrightnessSlider.alpha = self.isControlsHidden ? 0 : 1
+            
+            self.colorCardsCollectionView.snp.updateConstraints { make in
+                make.top.equalTo(self.previewArea.snp.bottom).offset(self.isControlsHidden ? -100 : 20)
+            }
+            
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    private func showControls() {
+        guard isControlsHidden else { return }
+        isControlsHidden = false
+        
+        UIView.animate(withDuration: 0.3) {
+            self.colorCardsCollectionView.alpha = 1
+            self.quickBrightnessSlider.alpha = 1
+            
+            self.colorCardsCollectionView.snp.updateConstraints { make in
+                make.top.equalTo(self.previewArea.snp.bottom).offset(20)
+            }
+            
+            self.view.layoutIfNeeded()
         }
     }
 }

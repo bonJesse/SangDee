@@ -3,22 +3,29 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		2F27E672A6DFDEEAA54D0975 /* PresetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F62CAB2A29D347DFEA8F1D2 /* PresetManager.swift */; };
 		3EE59F3F52C256D8829D391C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F7591DE51ACD9BB2DDC5D3E /* Assets.xcassets */; };
+		6BA44047C0B615CD419DB88F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DCAAD0402924B05433FDAFE /* AVFoundation.framework */; };
+		6E0033449D2C42375C72D67B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF91F0418528BB9D1321F7D8 /* UIKit.framework */; };
 		95024513E2064D900EC10E11 /* ColorWheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7F78BD39034844C3735FF9 /* ColorWheelView.swift */; };
 		95448269B2CDF2FFBA6222E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB6EE4DFFE360FCF465FFD3 /* AppDelegate.swift */; };
 		9F82CDAC71C1FF7EB80AEEF3 /* SangDeeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36941D866D5E1BD199B27B4 /* SangDeeController.swift */; };
 		BC3C827598A72398CCB008B5 /* LightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E26741DB55E32FA312BB88 /* LightController.swift */; };
+		BE170C80BF021C43F9BDE9E1 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BC5AF90B1929536A381D5B1D /* RxSwift */; };
+		C509F169E2DAE6566A5F1D7B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0876BDB22ABE0EBCD3152847 /* SnapKit */; };
 		CB82D8D3F17E78339BDA53D6 /* ColorCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2294A215900F5A81DC0CAD /* ColorCardCell.swift */; };
+		CFBACC555197D76B083832B9 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4B74ACB560F7D81044B2E665 /* RxCocoa */; };
 		E5DAECC5C88D67732BD4690E /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E55E4525A4871CA71637A21 /* SideMenuViewController.swift */; };
 		F9D7420E843B1F9593A4B4F0 /* RGBControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF9FC044558BB41AEAF8260 /* RGBControlView.swift */; };
+		FFC9678CCA373BA3AF3BE992 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6622641FF3BE92882812F326 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06EBD5AC02E35D3E35BC8108 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1EF9FC044558BB41AEAF8260 /* RGBControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBControlView.swift; sourceTree = "<group>"; };
 		1F62CAB2A29D347DFEA8F1D2 /* PresetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetManager.swift; sourceTree = "<group>"; };
 		3960B62E5A71281AAD3AE54D /* SangDee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SangDee.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -27,16 +34,34 @@
 		7EB6EE4DFFE360FCF465FFD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F7591DE51ACD9BB2DDC5D3E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E55E4525A4871CA71637A21 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		9DCAAD0402924B05433FDAFE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B2F43C4884204F4C6FE5A2E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B36941D866D5E1BD199B27B4 /* SangDeeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SangDeeController.swift; sourceTree = "<group>"; };
 		CC2294A215900F5A81DC0CAD /* ColorCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCardCell.swift; sourceTree = "<group>"; };
+		DF91F0418528BB9D1321F7D8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AC7CF7889A8F760E5BBB8180 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E0033449D2C42375C72D67B /* UIKit.framework in Frameworks */,
+				6BA44047C0B615CD419DB88F /* AVFoundation.framework in Frameworks */,
+				C509F169E2DAE6566A5F1D7B /* SnapKit in Frameworks */,
+				BE170C80BF021C43F9BDE9E1 /* RxSwift in Frameworks */,
+				CFBACC555197D76B083832B9 /* RxCocoa in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		01A51E794AEE1794E4812736 = {
 			isa = PBXGroup;
 			children = (
 				2CF23C0ED3ACC0C87FAAA7CF /* SangDee */,
+				AA54CB1CF0AA20E72EA90022 /* Frameworks */,
 				ECA20A5F578A0E90305FE1D5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,6 +80,7 @@
 			children = (
 				7EB6EE4DFFE360FCF465FFD3 /* AppDelegate.swift */,
 				B2F43C4884204F4C6FE5A2E2 /* Info.plist */,
+				6622641FF3BE92882812F326 /* LaunchScreen.storyboard */,
 				F159982EFF615FCEC5508F71 /* Controllers */,
 				05403F3AD71F4F5AA2C49BAC /* Models */,
 				734FFAE92DD3FA4F86557023 /* Resources */,
@@ -69,6 +95,15 @@
 				7F7591DE51ACD9BB2DDC5D3E /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		AA54CB1CF0AA20E72EA90022 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9DCAAD0402924B05433FDAFE /* AVFoundation.framework */,
+				DF91F0418528BB9D1321F7D8 /* UIKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		EB70864C1C6BF1A067FB83FF /* Views */ = {
@@ -107,12 +142,18 @@
 			buildPhases = (
 				5B08A6A7B72430D445B8E0CF /* Sources */,
 				C13E54F53AD77E4B097175C9 /* Resources */,
+				AC7CF7889A8F760E5BBB8180 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = SangDee;
+			packageProductDependencies = (
+				0876BDB22ABE0EBCD3152847 /* SnapKit */,
+				BC5AF90B1929536A381D5B1D /* RxSwift */,
+				4B74ACB560F7D81044B2E665 /* RxCocoa */,
+			);
 			productName = SangDee;
 			productReference = 3960B62E5A71281AAD3AE54D /* SangDee.app */;
 			productType = "com.apple.product-type.application";
@@ -127,7 +168,7 @@
 				LastUpgradeCheck = 1610;
 			};
 			buildConfigurationList = CF3A357E54775FE9E15907ED /* Build configuration list for PBXProject "SangDee" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -135,6 +176,11 @@
 				en,
 			);
 			mainGroup = 01A51E794AEE1794E4812736;
+			packageReferences = (
+				B9F294BE511F35DEB51798A3 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				416949DC70329066E05915CA /* XCRemoteSwiftPackageReference "RxSwift" */,
+				A080E222709BA5B914144467 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -149,6 +195,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EE59F3F52C256D8829D391C /* Assets.xcassets in Resources */,
+				FFC9678CCA373BA3AF3BE992 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,12 +219,22 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		6622641FF3BE92882812F326 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				06EBD5AC02E35D3E35BC8108 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		2E2DBA1E891C3B17B71A0D5D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -209,9 +266,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YOUR_TEAM_ID;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -226,10 +283,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sangdee.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -242,18 +300,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 49B98S8J4U;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SangDee/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.moijesse.sangdee;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sangdee.app;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -262,7 +320,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -294,9 +351,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YOUR_TEAM_ID;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -305,9 +362,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sangdee.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -320,18 +378,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 49B98S8J4U;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SangDee/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.moijesse.sangdee;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sangdee.app;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -358,6 +416,51 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		416949DC70329066E05915CA /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = exactVersion;
+				version = 6.6.0;
+			};
+		};
+		A080E222709BA5B914144467 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = exactVersion;
+				version = 5.6.0;
+			};
+		};
+		B9F294BE511F35DEB51798A3 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = exactVersion;
+				version = 6.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0876BDB22ABE0EBCD3152847 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A080E222709BA5B914144467 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		4B74ACB560F7D81044B2E665 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9F294BE511F35DEB51798A3 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		BC5AF90B1929536A381D5B1D /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 416949DC70329066E05915CA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8492242AE2B88CD8000581B3 /* Project object */;
 }
